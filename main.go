@@ -1,13 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"golang.org/x/net/html/charset"
-	"golang.org/x/text/encoding"
-	"io"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 )
 
 func main(){
@@ -23,32 +20,18 @@ func main(){
 		return
 	}
 
-	//网页转码方法一
-	//这个包在golang.org/x/text里  encoding 下
-	//如果网页是GBK，需要转码，要不然打出来是乱码
-	//utf8Reader:=transform.NewReader(resp.Body,simplifiedchinese.GBK.NewDecoder())
-	//all,err:=ioutil.ReadAll(utf8Reader)
-
-	//网页转码方法二
-	//这个需要用到golang.org/x/net下的html
-	//e:=determineEncoding(resp.Body)
-	//utf8Reader:=transform.NewReader(resp.Body,e.NewDecoder())
-	//all,err:=ioutil.ReadAll(utf8Reader)
-
 	all,err:=ioutil.ReadAll(resp.Body)
 	if err!=nil{
 		panic(err)
 	}
-	fmt.Printf("%s\n",all)
-
+	printCityList(all)
 }
 
-
-func determineEncoding(r io.Reader) encoding.Encoding{
-	bytes, err:=bufio.NewReader(r).Peek(1024)
-	if err!=nil{
-		panic(err)
+func printCityList(contents []byte){
+	re:=regexp.MustCompile(`<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`)
+	matches := re.FindAllSubmatch(contents, -1)
+	for _,m:=range matches{
+		fmt.Printf("城市：%s，URL: %s\n",m[2],m[1])//用空格把每个元素分开
 	}
-	e, _, _ := charset.DetermineEncoding(bytes, "")
-	return e
+	fmt.Printf("找到：%d 个结果\n",len(matches))
 }
