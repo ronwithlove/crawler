@@ -5,13 +5,6 @@ package model
 type Profile struct {
 	UserId string
 	Name string
-	Gender string
-	Age	int
-	Height	int
-	Income string
+	Age	string
 	Marriage string
-	Education string
-	Occupation string
-	City string
-	Jiguan string
 }
