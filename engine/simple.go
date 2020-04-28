@@ -5,7 +5,9 @@ import (
 	"log"
 )
 
-func Run(seeds ...Request){//...表示传入任意个数的Request
+type SimpleEngine struct{}
+
+func (e SimpleEngine) Run(seeds ...Request){//...表示传入任意个数的Request
 	var requests []Request
 	for _,r:= range seeds{
 		requests=append(requests,r)
@@ -29,17 +31,15 @@ func Run(seeds ...Request){//...表示传入任意个数的Request
 	}
 }
 
+//worker 把fetcher和parser提取出来
 func worker(r Request) (ParseResult,error){
 	log.Printf("Fetching %s", r.Url)
-	//1.通过网页抓取内容
-	body, err:=fetcher.Fetch(r.Url)
+	body, err:=fetcher.Fetch(r.Url)//fetcher
 	if err!=nil{//如果出错，打印下，不可以return，
-		// 因为有很多个request，不可能一个不对，全挂了，如果这样的话爬虫就没法工作了
 		log.Printf("Fetcher:error fetching url %s: %v",
 			r.Url,err)
 		return  ParseResult{},err//这里ParserResult是个结构，不是指针，不能return nil
 	}
 
-	//2.使用request里的分析方法来分析抓取的内容
-	return r.ParserFunc(body),nil
+	return r.ParserFunc(body),nil//parser
 }

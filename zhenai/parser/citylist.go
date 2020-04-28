@@ -12,7 +12,7 @@ func ParseCityList(contents []byte) engine.ParseResult{
 	matches := re.FindAllSubmatch(contents, -1)
 
 	result:=engine.ParseResult{}
-	limit:=3
+	//limit:=3
 	for _,m:=range matches{
 		result.Items=append(result.Items,"City "+string(m[2]))//城市名
 		result.Requests=append(
@@ -20,10 +20,10 @@ func ParseCityList(contents []byte) engine.ParseResult{
 			Url:	string(m[1]),//url
 			ParserFunc: ParseCity,
 			})
-		limit--//就加载10个城市，要不然太多，看个结果要等半天
-		if limit==0{
-			break
-		}
+		//limit--//就加载10个城市，要不然太多，看个结果要等半天
+		//if limit==0{
+		//	break
+		//}
 	}
 	return  result
 }
