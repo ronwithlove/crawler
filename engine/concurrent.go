@@ -10,26 +10,26 @@ type ConcurrentEngine struct{
 }
 
 type Scheduler interface {
-	Submit(Request)//这里的Request是interface{}类型，不需要名字, Submit是方法，Request是传入参数
-	ConfigureMasterWorkerChan(chan Request)
+	Submit(Request)//interface里的函数不需要名字, Submit是方法，Request是传入参数
+	ConfigureMasterWorkerChan(chan Request)//这里也是,不需要方法名，Requestl类型的 channel
 }
+
 func (e *ConcurrentEngine) Run(seeds ...Request){
 	in:=make (chan Request)
 	out:=make(chan ParseResult)
-	e.Scheduler.ConfigureMasterWorkerChan(in)
+	e.Scheduler.ConfigureMasterWorkerChan(in)//通过这个方法把in放到scheduler中去
+	//go程并发
+	for i:=0; i<e.WorkerCount; i++{
+		createWorker(in,out)
+	}
 
 	for _,r:=range seeds{
 		e.Scheduler.Submit(r)
 	}
 
-	//go程并发，无限循环
-	for i:=0; i<e.WorkerCount; i++{
-		createWorker(in,out)
-	}
-
 	itemCount:=0
-	for{//无限循环
-		result:=<-out
+	for{
+		result:=<-out//work会输出到out,这里去收
 		for _, item:=range result.Items{
 			log.Printf("Got item #%d: %v",itemCount,item)
 			itemCount++
