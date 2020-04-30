@@ -12,6 +12,8 @@ func Run(seeds ...Request){//...表示传入任意个数的Request
 	}//先把传入的Request组装好
 
 	for len(requests)>0{
+		//log.Println("len(requests)=", len(requests))
+
 		r:=requests[0]//把第一个request拿出来
 		requests=requests[1:]
 
