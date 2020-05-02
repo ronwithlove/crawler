@@ -12,15 +12,16 @@ type ConcurrentEngine struct{
 type Scheduler interface {
 	Submit(Request)//interface里的函数不需要名字, Submit是方法，Request是传入参数
 	ConfigureMasterWorkerChan(chan Request)//这里也是,不需要方法名，Requestl类型的 channel
+	WorkerReady(chan Request)
+	Run()
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request){
-	in:=make (chan Request)
 	out:=make(chan ParseResult)
-	e.Scheduler.ConfigureMasterWorkerChan(in)//通过这个方法把in放到scheduler中去
+	e.Scheduler.Run()
 	//先创建好这些work，workerChan channel没的时候就等着呗
 	for i:=0; i<e.WorkerCount; i++{
-		createWorker(in,out)
+		createWorker(out,e.Scheduler)
 	}
 	//开始往workerChan写入request了，然后就会自动运行把结果输出到out
 	//这一步就相当于把in 带入到createWorker里
@@ -42,9 +43,11 @@ func (e *ConcurrentEngine) Run(seeds ...Request){
 	}
 }
 
-func createWorker(in chan Request, out chan ParseResult) {
+func createWorker(out chan ParseResult,s Scheduler) {
+	in:=make(chan Request)
 	go func() {
 		for{
+			s.WorkerReady(in)
 			request:=<-in
 			result,err:=worker(request)
 			if err!=nil{
