@@ -18,23 +18,24 @@ func (e *ConcurrentEngine) Run(seeds ...Request){
 	in:=make (chan Request)
 	out:=make(chan ParseResult)
 	e.Scheduler.ConfigureMasterWorkerChan(in)//通过这个方法把in放到scheduler中去
-	//go程并发
+	//先创建好这些work，workerChan channel没的时候就等着呗
 	for i:=0; i<e.WorkerCount; i++{
 		createWorker(in,out)
 	}
-
+	//开始往workerChan写入request了，然后就会自动运行把结果输出到out
+	//这一步就相当于把in 带入到createWorker里
 	for _,r:=range seeds{
 		e.Scheduler.Submit(r)
 	}
 
 	itemCount:=0
-	for{
-		result:=<-out//work会输出到out,这里去收
-		for _, item:=range result.Items{
+	for{//一直循环读取out
+		result:=<-out//这里去收out
+		for _, item:=range result.Items{//把结果打印出来
 			log.Printf("Got item #%d: %v",itemCount,item)
 			itemCount++
 		}
-
+		//把第二个属性request	再放到workChian，再去让他执行
 		for _, request:=range result.Requests{
 			e.Scheduler.Submit(request)
 		}
