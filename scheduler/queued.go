@@ -16,9 +16,10 @@ func (s *QueuedScheduler)WorkerReady(w chan engine.Request){
 	s.workerChan<-w
 }
 
-func (s *QueuedScheduler) ConfigureMasterWorkerChan(chan engine.Request) {
-	panic("implement me")
+func (s *QueuedScheduler) WorkerChan() chan engine.Request {
+	return  make(chan engine.Request)
 }
+
 
 func (s *QueuedScheduler) Run(){//这里要加*，就是指针，因为使用了s.workerChan这个变量，改变了他的内容
 	s.workerChan=make(chan chan engine.Request)
@@ -39,7 +40,7 @@ func (s *QueuedScheduler) Run(){//这里要加*，就是指针，因为使用了
 			case w:=<-s.workerChan:
 				workerQ=append(workerQ,w)
 			//只有这两个chan都有值的时候，才会到这个case，这个时候就是上面if满足的语句
-			//就会把序列第一个request和worker分配给activeRequest和activeWorker
+			//就会把request分配给Worker
 			case activeWorker<-activeRequest:
 				requestQ=requestQ[1:]//然后把他从序列里移除
 				workerQ=workerQ[1:]

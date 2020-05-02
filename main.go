@@ -9,6 +9,7 @@ import (
 func main(){
 	e:=engine.ConcurrentEngine{
 		Scheduler:   &scheduler.QueuedScheduler{},
+		//Scheduler:   &scheduler.SimpleScheduler{},//换这个也行
 		WorkerCount: 100,
 	}
 	e.Run(engine.Request{
