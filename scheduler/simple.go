@@ -15,6 +15,6 @@ func (s *SimpleScheduler)ConfigureMasterWorkerChan(c chan engine.Request){
 
 func (s *SimpleScheduler) Submit(r engine.Request)  {
 	//send request to worker chan
-	//这里要用goroutine把in尽快收走
+	//这里要用goroutine把in尽快收走,这里就等于in<-seed
 	go func() {s.workerChan<-r}()
 }

@@ -9,10 +9,13 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
+var rateLimiter=time.Tick(100*time.Millisecond)
 //传入url，传出文本
 func Fetch(url string)([]byte,error){
+	//<-rateLimiter//通过这个channel来降低速度
 	resp,err:=http.Get(url)
 	if err!=nil{
 		return nil, err
