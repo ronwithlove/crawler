@@ -14,7 +14,7 @@ func ParseCity(contents []byte) engine.ParseResult{
 	result:=engine.ParseResult{}
 	for _,m:=range matches{
 		userid:=string(m[1])
-		result.Items=append(result.Items,"UserID "+userid)//usrid
+		//result.Items=append(result.Items,"UserID "+userid)//usrid
 		result.Requests=append(
 			result.Requests,engine.Request{
 				Url:	"http://www.7799520.com/user/"+string(m[1])+".html",//url

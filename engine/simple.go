@@ -33,7 +33,7 @@ func (e SimpleEngine) Run(seeds ...Request){//...表示传入任意个数的Requ
 
 //worker 把fetcher和parser提取出来
 func worker(r Request) (ParseResult,error){
-	log.Printf("Fetching %s", r.Url)
+//	log.Printf("Fetching %s", r.Url)
 	body, err:=fetcher.Fetch(r.Url)//fetcher
 	if err!=nil{//如果出错，打印下，不可以return，
 		log.Printf("Fetcher:error fetching url %s: %v",r.Url,err)

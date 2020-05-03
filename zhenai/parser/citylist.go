@@ -13,16 +13,16 @@ func ParseCityList(contents []byte) engine.ParseResult{
 
 	result:=engine.ParseResult{}
 
-	for k,m:=range matches{
-		result.Items=append(result.Items,"City "+string(m[2]))//城市名
+	for _,m:=range matches{
+		//result.Items=append(result.Items,"City "+string(m[2]))//城市名
 		result.Requests=append(
 			result.Requests,engine.Request{
 			Url:	string(m[1]),//url
 			ParserFunc: ParseCity,
 			})
-		if k==2{//就找前3个城市，每个城市有15个会员
-			break
-		}
+		//if k==2{//就找前3个城市，每个城市有15个会员
+		//	break
+		//}
 	}
 	return  result
 }
