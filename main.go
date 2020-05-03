@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/crawler/crawler/engine"
+	"github.com/crawler/crawler/persist"
 	"github.com/crawler/crawler/scheduler"
 	"github.com/crawler/crawler/zhenai/parser"
 )
@@ -11,6 +12,7 @@ func main(){
 		Scheduler:   &scheduler.QueuedScheduler{},
 		//Scheduler:   &scheduler.SimpleScheduler{},//换这个也行
 		WorkerCount: 100,
+		ItemChan:	persist.ItemSaver(),
 	}
 	e.Run(engine.Request{
 		//Url:  "http://www.zhenai.com/zhenghun",

@@ -1,12 +1,9 @@
 package engine
 
-import (
-	"log"
-)
-
 type ConcurrentEngine struct{
 	Scheduler Scheduler
 	WorkerCount int
+	ItemChan chan interface{}
 }
 
 type Scheduler interface {
@@ -33,12 +30,10 @@ func (e *ConcurrentEngine) Run(seeds ...Request){
 		e.Scheduler.Submit(r)
 	}
 
-	itemCount:=0
 	for{//一直循环读取out
 		result:=<-out//这里去收out
 		for _, item:=range result.Items{//把结果打印出来
-			log.Printf("Got item #%d: %v",itemCount,item)
-			itemCount++
+			go func(){e.ItemChan<-item}()
 		}
 		//把第二个属性request	再放到workChian，再去让他执行
 		for _, request:=range result.Requests{
