@@ -19,12 +19,12 @@ type ReadyNotifier interface {
 
 func (e *ConcurrentEngine) Run(seeds ...Request){
 	out:=make(chan ParseResult)
-	e.Scheduler.Run()
+	e.Scheduler.Run()//request分配给worker
 	//先创建好这些work，workerChan channel没的时候就等着呗
 	for i:=0; i<e.WorkerCount; i++{
 		createWorker(e.Scheduler.WorkerChan(),out,e.Scheduler)
 	}
-	//开始往workerChan写入request了，然后就会自动运行把结果输出到out
+	//传入request，然后就会自动运行把结果输出到out
 	//这一步就相当于把in 带入到createWorker里
 	for _,r:=range seeds{
 		e.Scheduler.Submit(r)
@@ -45,13 +45,13 @@ func (e *ConcurrentEngine) Run(seeds ...Request){
 func createWorker(in chan Request, out chan ParseResult,ready ReadyNotifier) {
 	go func() {
 		for{
-			ready.WorkerReady(in)
-			request:=<-in
-			result,err:=worker(request)
+			ready.WorkerReady(in)//in 就是workerChan
+			request:=<-in//request拿到workerChan
+			result,err:=worker(request)//开始工作，返回一个ParseResult
 			if err!=nil{
 				continue
 			}
-			out<-result
+			out<-result//out读取ParseResult
 		}
 	}()
 }
