@@ -24,7 +24,6 @@ func TestParseCityList(t *testing.T) {
 		"http://city.7799520.com/aomen",
 		"http://city.7799520.com/anqing",
 	}
-	expectedCities:=[]string{"City 安徽","City 澳门","City 安庆"}
 
 	if len(result.Requests)!=resultSize{
 		t.Errorf("expected %d requests; but had %d",resultSize, len(result.Requests))
@@ -33,16 +32,6 @@ func TestParseCityList(t *testing.T) {
 	for i,url:=range expectedUrls{
 		if result.Requests[i].Url!=url{
 			t.Errorf("expected url #%d: %s; but was %s", i, url,result.Requests[i].Url)
-		}
-	}
-
-	if len(result.Items)!=resultSize{
-		t.Errorf("expected %d requests; but had %d",resultSize, len(result.Items))
-	}
-	//校对前3个city是否正确
-	for i,city:=range expectedCities{
-		if result.Items[i].(string)!=city{
-			t.Errorf("expected city #%d: %s; but was %s", i, city,result.Items[i].(string))
 		}
 	}
 

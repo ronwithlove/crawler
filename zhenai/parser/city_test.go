@@ -21,7 +21,6 @@ func TestParseCity(t *testing.T) {
 		"http://www.7799520.com/user/3375292.html",
 		"http://www.7799520.com/user/3372945.html",
 	}
-	expectedUserID:=[]string{"UserID 3376112","UserID 3375292","UserID 3372945"}
 
 	if len(result.Requests)!=resultSize{
 		t.Errorf("expected %d requests; but had %d",resultSize, len(result.Requests))
@@ -32,14 +31,5 @@ func TestParseCity(t *testing.T) {
 			t.Errorf("expected url #%d: %s; but was %s", i, url,result.Requests[i].Url)
 		}
 	}
-	//校对前3个city是否正确
-	for i,userid:=range expectedUserID{
-		if result.Items[i]!=userid{
-			t.Errorf("expected userid #%d: %s; but was %s", i, userid,result.Items[i].(string))
-		}
-	}
-	//校对元素数量
-	if len(result.Items)!=resultSize{
-		t.Errorf("expected %d requests; but had %d",resultSize, len(result.Items))
-	}
+
 }

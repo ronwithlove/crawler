@@ -7,7 +7,13 @@ type Request struct{
 
 type ParseResult struct {
 	Requests []Request
-	Items 	[]interface{}
+	Items 	[]Item
+}
+
+type Item struct{
+	Url string
+	Id string
+	Payload interface{}//可以是任意的，这里用model.Proflie
 }
 
 func NilParser([]byte) ParseResult{

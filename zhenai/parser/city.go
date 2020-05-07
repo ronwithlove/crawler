@@ -13,15 +13,16 @@ func ParseCity(contents []byte) engine.ParseResult{
 
 	result:=engine.ParseResult{}
 	for _,m:=range matches{
+		url:="http://www.7799520.com/user/"+string(m[1])+".html"
 		userid:=string(m[1])
 		//result.Items=append(result.Items,"UserID "+userid)//usrid
 		result.Requests=append(
 			result.Requests,engine.Request{
-				Url:	"http://www.7799520.com/user/"+string(m[1])+".html",//url
+				Url:url,//url
 				//ParserFunc: ParseProfile,
 				//函数式编程
 				ParserFunc: func(con []byte) engine.ParseResult{
-					return  ParseProfile(con,userid)
+					return  ParseProfile(con,url,userid)
 				},
 			})
 	}
