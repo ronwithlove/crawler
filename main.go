@@ -10,13 +10,16 @@ import (
 func main(){
 	e:=engine.ConcurrentEngine{
 		Scheduler:   &scheduler.QueuedScheduler{},
-		//Scheduler:   &scheduler.SimpleScheduler{},//换这个也行
 		WorkerCount: 100,
 		ItemChan:	persist.ItemSaver(),
 	}
 	e.Run(engine.Request{
-		//Url:  "http://www.zhenai.com/zhenghun",
 		Url:  "http://city.7799520.com",
 		ParserFunc: parser.ParseCityList,
 	})
+	var req engine.Request
+	var reqS []engine.Request
+	e.Run(req)
+	e.Run(reqS[0],reqS[1])
+	e.Run(reqS...)
 }
