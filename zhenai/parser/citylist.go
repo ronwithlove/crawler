@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"github.com/crawler/crawler/engine"
-	"regexp"
+"github.com/crawler/crawler/engine"
+"regexp"
 )
 
 //const cityListRe=`<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`
@@ -17,8 +17,8 @@ func ParseCityList(contents []byte) engine.ParseResult{
 		//result.Items=append(result.Items,"City "+string(m[2]))//城市名
 		result.Requests=append(
 			result.Requests,engine.Request{
-			Url:	string(m[1]),//url
-			ParserFunc: ParseCity,
+				Url:	string(m[1]),//url
+				ParserFunc: ParseCity,
 			})
 		//if k==2{//就找前3个城市，每个城市有15个会员
 		//	break

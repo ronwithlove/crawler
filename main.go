@@ -17,9 +17,4 @@ func main(){
 		Url:  "http://city.7799520.com",
 		ParserFunc: parser.ParseCityList,
 	})
-	var req engine.Request
-	var reqS []engine.Request
-	e.Run(req)
-	e.Run(reqS[0],reqS[1])
-	e.Run(reqS...)
 }
