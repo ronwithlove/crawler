@@ -13,7 +13,7 @@ func TestParseCity(t *testing.T) {
 	}
 
 	//fmt.Printf("%s\n",contents)
-	result:=ParseCity(contents)
+	result:=ParseCity(contents,"")
 
 	const resultSize=15
 	expectedUrls:=[]string{

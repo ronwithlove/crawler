@@ -32,7 +32,7 @@ func (e *ConcurrentEngine) Run(seeds ...Request){
 	for{//一直循环读取out
 		result:=<-out//这里去收out,如果有就收走
 		for _, item:=range result.Items{//把结果打印出来
-			go func(){e.ItemChan<-item}()
+			go func(){e.ItemChan<-item}()//不用go程会死锁
 		}
 		//把第二个属性request	再放到requestChan，再去让去等着，等有空闲的 request chan chan就又可以被执行了
 		for _, request:=range result.Requests{

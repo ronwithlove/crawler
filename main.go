@@ -8,10 +8,14 @@ import (
 )
 
 func main(){
+	itemChan,err:=persist.ItemSaver("dating_profile")
+	if err!=nil{
+		panic(err)//起不来就挂掉，用panic
+	}
 	e:=engine.ConcurrentEngine{
 		Scheduler:   &scheduler.QueuedScheduler{},
 		WorkerCount: 100,
-		ItemChan:	persist.ItemSaver(),
+		ItemChan: itemChan,
 	}
 	e.Run(engine.Request{
 		Url:  "http://city.7799520.com",

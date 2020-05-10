@@ -16,7 +16,7 @@ func TestParseCityList(t *testing.T) {
 	}
 
 	//fmt.Printf("%s\n",contents)
-	result:=ParseCityList(contents)
+	result:=ParseCityList(contents,"")
 
 	const resultSize=389 //真爱是470
 	expectedUrls:=[]string{

@@ -31,14 +31,15 @@ func Test_save(t *testing.T) {
 		panic(err)
 	}
 
+	const  index="dating_test"
 	//1.先保存测试数据
-	err=save(expectd)//测试save方法
+	err=save(client,index,expectd)//测试save方法
 	if err!=nil{
 		panic(err)
 	}
 
 	//2.拿出来
-	resp,err:=client.Get().Index("dating_profile").Id(expectd.Id).Do(context.Background())
+	resp,err:=client.Get().Index(index).Id(expectd.Id).Do(context.Background())
 
 	if err!=nil{
 		panic(err)
