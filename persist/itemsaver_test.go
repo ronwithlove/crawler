@@ -33,7 +33,7 @@ func Test_save(t *testing.T) {
 
 	const  index="dating_test"
 	//1.先保存测试数据
-	err=save(client,index,expectd)//测试save方法
+	err=Save(client,index,expectd)//测试save方法
 	if err!=nil{
 		panic(err)
 	}
