@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/crawler/crawler/config"
 	"github.com/crawler/crawler/distributed/persist/client"
 	"github.com/crawler/crawler/engine"
 	"github.com/crawler/crawler/scheduler"
@@ -8,7 +10,7 @@ import (
 )
 
 func main(){
-	itemChan,err:=client.ItemSaver(":1234")
+	itemChan,err:=client.ItemSaver(fmt.Sprintf(":%d",config.ItemSaverPort))
 	if err!=nil{
 		panic(err)//起不来就挂掉，用panic
 	}
