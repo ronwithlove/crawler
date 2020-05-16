@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/crawler/crawler/config"
 	"github.com/crawler/crawler/engine"
 	"github.com/crawler/crawler/persist"
 	"github.com/crawler/crawler/scheduler"
@@ -19,6 +20,6 @@ func main(){
 	}
 	e.Run(engine.Request{
 		Url:  "http://city.7799520.com",
-		Parser: engine.NewFuncParser(parser.ParseCityList,"ParseCityList"),
+		Parser: engine.NewFuncParser(parser.ParseCityList,config.ParseCityList),
 	})
 }

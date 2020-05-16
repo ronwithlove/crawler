@@ -14,7 +14,7 @@ func TestParseProfile(t *testing.T) {
 		panic(err)
 	}
 
-	result:=ParseProfile(contents,"http://www.7799520.com/user/3376375.html","3376375")//这个userid是网页里的
+	result:=parseProfile(contents,"http://www.7799520.com/user/3376375.html","3376375")//这个userid是网页里的
 
 	if len(result.Items)!=1{
 		t.Errorf("Items应该只有1个元素，现在有 %v",len(result.Items))

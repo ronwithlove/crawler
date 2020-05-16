@@ -47,7 +47,7 @@ func createWorker(in chan Request, out chan ParseResult,ready ReadyNotifier) {
 		for{//这里使用了ReadyNotifier.WorkerReady方法把reuest channel传给了 workerChan
 			ready.WorkerReady(in)//如果有闲置输入，就自动去workerQ等着了
 			request:=<-in//直到in在scheduler.Run接收到了request，这里的request才读的出来，
-			result,err:=worker(request)//于是进入这行，开工，返回一个ParseResult
+			result,err:= Worker(request)//于是进入这行，开工，返回一个ParseResult
 			if err!=nil{
 				continue
 			}

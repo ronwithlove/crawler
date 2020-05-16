@@ -16,7 +16,7 @@ func (e SimpleEngine) Run(seeds ...Request){//...表示传入任意个数的Requ
 		r:=requests[0]//把第一个request拿出来
 		requests=requests[1:]
 
-		parseResult,err:=worker(r)
+		parseResult,err:= Worker(r)
 		if err!=nil{
 			continue
 		}
