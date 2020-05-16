@@ -14,5 +14,5 @@ func worker(r Request) (ParseResult,error){
 		return  ParseResult{},err//这里ParserResult是个结构，不是指针，不能return nil
 	}
 
-	return r.ParserFunc(body,r.Url),nil//传入content和Url
+	return r.Parser.Parse(body,r.Url),nil//传入content和Url
 }

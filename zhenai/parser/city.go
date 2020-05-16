@@ -17,14 +17,9 @@ func ParseCity(contents []byte,_ string) engine.ParseResult{
 		result.Requests=append(
 			result.Requests,engine.Request{
 				Url:url,
-				ParserFunc: ProfileParser(string(m[1])),
+				Parser: NewProfileParser(string(m[1])),
 			})
 	}
 	return  result
 }
 
-func ProfileParser(userid string) engine.ParserFunc{
-	return func(con []byte,url string) engine.ParseResult{
-		return  ParseProfile(con,url,userid)
-	}
-}

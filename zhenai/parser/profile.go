@@ -14,7 +14,7 @@ var marrigageRe = regexp.MustCompile(`<span class="marrystatus">([^<]+)</span>`)
 //`<span class="age s1">23岁</span>`
 var ageRe = regexp.MustCompile(`<span class="age s1">([\d]+)岁</span>`) //\d就是1个到多个数字,加上括号，提取数字
 
-func ParseProfile(contents []byte, url string, userid string) engine.ParseResult {
+func parseProfile(contents []byte, url string, userid string) engine.ParseResult {
 	profile := model.Profile{}
 
 	//Userid
@@ -41,5 +41,25 @@ func extractString(contents []byte, re *regexp.Regexp) string {
 		return string(match[1])
 	} else {
 		return ""
+	}
+}
+
+type ProfileParser struct {
+	userID string
+}
+
+//Profile的Parser相比其他的还需要从外部传入一个userID
+func (p *ProfileParser) Parse(contents []byte, url string) engine.ParseResult {
+	return parseProfile(contents,url,p.userID)
+}
+
+func (p *ProfileParser) Serialize() (name string, args interface{}) {
+	return "ProfileParser",p.userID//序列化的时候也要这个参数
+}
+
+//只要他return的是继承了Parser就可以了
+func NewProfileParser(userid string) *ProfileParser{
+	return &ProfileParser{//返回的是指针，所以这里要用&，地址
+		userID:userid,
 	}
 }

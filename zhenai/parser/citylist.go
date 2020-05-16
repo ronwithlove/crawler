@@ -18,7 +18,7 @@ func ParseCityList(contents []byte,_ string) engine.ParseResult{
 		result.Requests=append(
 			result.Requests,engine.Request{
 				Url:	string(m[1]),//url
-				ParserFunc: ParseCity,
+				Parser: engine.NewFuncParser(ParseCity,"ParseCity"),
 			})
 		//if k==2{//就找前3个城市，每个城市有15个会员
 		//	break

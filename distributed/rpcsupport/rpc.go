@@ -26,6 +26,7 @@ func ServeRpc(host string,service interface{})error{
 
 }
 
+//建立客户端
 func NewClient(host string) (*rpc.Client, error){
 	conn,err:=net.Dial("tcp",host)
 	if err!=nil{
