@@ -9,6 +9,7 @@ import (
 	"log"
 )
 
+//itemserver的服务器
 func main() {
 	log.Fatal(serveRpc(fmt.Sprintf(":%d",config.ItemSaverPort),config.ElasticIndex))
 }

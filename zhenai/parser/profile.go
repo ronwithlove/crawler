@@ -54,7 +54,8 @@ func (p *ProfileParser) Parse(contents []byte, url string) engine.ParseResult {
 }
 
 func (p *ProfileParser) Serialize() (name string, args interface{}) {
-	return "ProfileParser",p.userID//序列化的时候也要这个参数
+	return "ParseProfile",p.userID//序列化的时候也要这个参数
+	//return "ProfileParser",p.userID//序列化的时候也要这个参数
 }
 
 //只要他return的是继承了Parser就可以了

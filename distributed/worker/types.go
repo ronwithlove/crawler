@@ -85,7 +85,7 @@ func deserializeParser(p SerializedParser) (engine.Parser,error){
 	case config.ParseCityList:
 		return  engine.NewFuncParser(parser.ParseCityList,config.ParseCityList),nil
 	case config.ParseCity:
-		return  engine.NewFuncParser(parser.ParseCityList,config.ParseCity),nil
+		return  engine.NewFuncParser(parser.ParseCity,config.ParseCity),nil
 	case config.NilParser:
 		return  engine.NilParser{},nil
 	case config.ParseProfile:
@@ -95,7 +95,7 @@ func deserializeParser(p SerializedParser) (engine.Parser,error){
 			return nil,fmt.Errorf("invalid arg: %v",p.Args)
 		}
 	default:
-		return nil, errors.New("unknown parser name")
+		return nil, errors.New("unknown parser name:"+p.Name)
 	}
 
 }

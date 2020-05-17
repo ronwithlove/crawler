@@ -2,7 +2,7 @@ package worker
 
 import "github.com/crawler/crawler/engine"
 
-//这里放rpc服务
+//这里放rpc服务，CrawlService的Process方法
 type CrawlService struct {
 
 }

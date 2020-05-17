@@ -7,6 +7,7 @@ import (
 	"log"
 )
 
+//ItemSaverService的Save方法
 type ItemSaverService struct{
 	Client *elastic.Client
 	Index string

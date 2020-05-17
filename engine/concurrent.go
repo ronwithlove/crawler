@@ -4,7 +4,10 @@ type ConcurrentEngine struct{
 	Scheduler Scheduler
 	WorkerCount int
 	ItemChan chan Item
+	RequestProcessor Processor
 }
+
+type Processor func (Request) (ParseResult,error)//worker
 
 type Scheduler interface {
 	ReadyNotifier
@@ -22,7 +25,7 @@ func (e *ConcurrentEngine) Run(seeds ...Request){
 	e.Scheduler.Run()//request分配给worker，一个并行无限循环的方法
 	//先创建好这些work，在没有workerChan channel的时候就等着
 	for i:=0; i<e.WorkerCount; i++{
-		createWorker(e.Scheduler.WorkerChan(),out,e.Scheduler)
+		e.createWorker(e.Scheduler.WorkerChan(),out,e.Scheduler)
 	}
 
 	for _,r:=range seeds{
@@ -42,12 +45,13 @@ func (e *ConcurrentEngine) Run(seeds ...Request){
 }
 
 
-func createWorker(in chan Request, out chan ParseResult,ready ReadyNotifier) {
+func (e *ConcurrentEngine) createWorker(in chan Request, out chan ParseResult,ready ReadyNotifier) {
 	go func() {
 		for{//这里使用了ReadyNotifier.WorkerReady方法把reuest channel传给了 workerChan
 			ready.WorkerReady(in)//如果有闲置输入，就自动去workerQ等着了
 			request:=<-in//直到in在scheduler.Run接收到了request，这里的request才读的出来，
-			result,err:= Worker(request)//于是进入这行，开工，返回一个ParseResult
+			//把原来的worker放到外面去配
+			result,err:= e.RequestProcessor(request)//于是进入这行，开工，返回一个ParseResult
 			if err!=nil{
 				continue
 			}

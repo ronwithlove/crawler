@@ -17,6 +17,7 @@ func main(){
 		Scheduler:   &scheduler.QueuedScheduler{},
 		WorkerCount: 100,
 		ItemChan: itemChan,
+		RequestProcessor:engine.Worker,//单机版直接调Worker
 	}
 	e.Run(engine.Request{
 		Url:  "http://city.7799520.com",
