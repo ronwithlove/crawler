@@ -3,6 +3,7 @@ package fetcher
 import (
 	"bufio"
 	"fmt"
+	"github.com/crawler/crawler/config"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/encoding/unicode"
@@ -12,10 +13,11 @@ import (
 	"time"
 )
 
-var rateLimiter=time.Tick(100*time.Millisecond)
+var rateLimiter=time.Tick(time.Second/config.Qps)
 //传入url，传出文本
 func Fetch(url string)([]byte,error){
-	//<-rateLimiter//通过这个channel来降低速度
+	<-rateLimiter//通过这个channel来降低速度
+	log.Printf("Fetching url %s",url)
 	resp,err:=http.Get(url)
 	if err!=nil{
 		return nil, err

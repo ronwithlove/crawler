@@ -15,6 +15,8 @@ func ServeRpc(host string,service interface{})error{
 	if err!=nil{
 		return err
 	}
+	//端口成功监听后给个反馈
+	log.Printf("Listening on %s",host)
 
 	for{
 		conn,err:=listener.Accept()

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/crawler/crawler/config"
 	"github.com/crawler/crawler/distributed/persist"
@@ -10,8 +11,16 @@ import (
 )
 
 //itemserver的服务器
-func main() {
-	log.Fatal(serveRpc(fmt.Sprintf(":%d",config.ItemSaverPort),config.ElasticIndex))
+var port=flag.Int("port",0,"open port to listen")
+
+func main()  {
+	flag.Parse()
+	if *port==0{
+		fmt.Println("must specify a port")
+		return
+	}
+	//使用命令行键入port
+	log.Fatal(serveRpc(fmt.Sprintf(":%d",*port),config.ElasticIndex))
 }
 
 func serveRpc(host,index string)error{
